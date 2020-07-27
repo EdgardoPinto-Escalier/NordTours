@@ -20,6 +20,27 @@ app.get('/api/v1/tours', (req, res) => {
   });
 });
 
+// Get a tour by its ID
+app.get('/api/v1/tours/:id', (req, res) => {
+  const id = req.params.id * 1;
+
+  if(id > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID'
+    });
+  }
+
+  const tour = tours.find(el => el.id === id);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour
+    }
+  });
+});
+
 // POST request
 app.post('/api/v1/tours', (req, res) => {
   const newId = tours[tours.length -1].id +1;
@@ -36,6 +57,7 @@ app.post('/api/v1/tours', (req, res) => {
     });
   });
 });
+
 
 
 const port = 3000;
