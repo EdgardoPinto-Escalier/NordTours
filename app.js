@@ -1,8 +1,15 @@
 const fs = require('fs');
 const express = require('express');
 const app = express();
-// Middleware
+
+// Middlewares
 app.use(express.json());
+
+// Custom Middleware
+app.use((req, res, next) => {
+  console.log('Hello from the Middleware');
+  next();
+});
 
 
 // GET request to get all the tours
