@@ -1,16 +1,24 @@
 const fs = require('fs');
 const express = require('express');
+const morgan = require('morgan');
+
 const app = express();
 
-// Middlewares
-app.use(express.json());
+///////////////////////////////////
+///// GENERAL MIDDLEWARES
+///////////////////////////////////
+app.use(morgan('dev'));
 
+app.use(express.json());
 // Custom Middleware
 app.use((req, res, next) => {
   console.log('Hello from the Middleware');
   next();
 });
 
+///////////////////////////////////
+///// ROUTE HANDLERS
+///////////////////////////////////
 
 // GET request to get all the tours
 const tours = JSON.parse(
@@ -92,6 +100,9 @@ const deleteTour = (req, res) => {
   });
 };
 
+//////////////////////////////////////////
+///// ROUTES
+//////////////////////////////////////////
 
 // Application Routes
 app.get('/api/v1/tours', getAllTours);
@@ -100,6 +111,9 @@ app.post('/api/v1/tours', createTour);
 app.patch('/api/v1/tours/:id', updateTour);
 app.delete('/api/v1/tours/:id', deleteTour);
 
+///////////////////////////////////////////////
+///// START SERVER
+///////////////////////////////////////////////
 
 // Port assign
 const port = 3000;
