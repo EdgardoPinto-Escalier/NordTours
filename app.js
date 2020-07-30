@@ -10,6 +10,7 @@ const app = express();
 app.use(morgan('dev'));
 
 app.use(express.json());
+
 // Custom Middleware
 app.use((req, res, next) => {
   console.log('Hello from the Middleware');
@@ -100,6 +101,46 @@ const deleteTour = (req, res) => {
   });
 };
 
+// GET all users handler
+const getAllUsers = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not completed yet'
+  });
+};
+
+// GET a single user handler
+const getUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not completed yet'
+  });
+};
+
+// CREATE user handler
+const createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not completed yet'
+  });
+};
+
+// UPDATE user handler
+const updateUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not completed yet'
+  });
+};
+
+// DELETE user handler
+const deleteUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not completed yet'
+  });
+};
+
 //////////////////////////////////////////
 ///// ROUTES
 //////////////////////////////////////////
@@ -110,6 +151,10 @@ app.get('/api/v1/tours/:id', getSingleTour);
 app.post('/api/v1/tours', createTour);
 app.patch('/api/v1/tours/:id', updateTour);
 app.delete('/api/v1/tours/:id', deleteTour);
+
+// User Routes
+app.route('/api/v1/users').get(getAllUsers).post(createUser);
+app.route('/api/v1/users/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 ///////////////////////////////////////////////
 ///// START SERVER
