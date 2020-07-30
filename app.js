@@ -1,6 +1,8 @@
-const fs = require('fs');
 const express = require('express');
 const morgan = require('morgan');
+
+const tourRouter = require('./routes/tourRoutes');
+const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
@@ -17,173 +19,9 @@ app.use((req, res, next) => {
   next();
 });
 
-///////////////////////////////////
-///// ROUTE HANDLERS
-///////////////////////////////////
-
-// GET request to get all the tours
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/data/app-data/tours-basic.json`)
-);
-const getAllTours = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-      tours
-    }
-  });
-};
-
-// GET single tour by ID
-const getSingleTour = (req, res) => {
-  const id = req.params.id * 1;
-
-  if (id > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
-  const tour = tours.find(el => el.id === id);
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour
-    }
-  });
-};
-
-// POST request (create tour)
-const createTour = (req, res) => {
-const newId = tours[tours.length - 1].id + 1;
-const newTour = Object.assign({ id: newId }, req.body);
-tours.push(newTour);
-fs.writeFile(`${__dirname}/data/app-data/tours-basic.json`,
-  JSON.stringify(tours),
-  err => {
-    res.status(201).json({
-      status: 'success',
-      data: {
-        tour: newTour
-      }
-    });
-  });
-};
-
-// PATCH request (update tour)
-const updateTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour: '<Updated Tour Successfully>'
-    }
-  });
-};
-
-// DELETE tour
-const deleteTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
-  res.status(204).json({
-    status: 'success',
-    data: null
-  });
-};
-
-// GET all users handler
-const getAllUsers = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not completed yet'
-  });
-};
-
-// GET a single user handler
-const getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not completed yet'
-  });
-};
-
-// CREATE user handler
-const createUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not completed yet'
-  });
-};
-
-// UPDATE user handler
-const updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not completed yet'
-  });
-};
-
-// DELETE user handler
-const deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not completed yet'
-  });
-};
-
-//////////////////////////////////////////
-///// ROUTES
-//////////////////////////////////////////
-
-// Application Routes
-const tourRouter = express.Router();
-const userRouter = express.Router();
-
-
-tourRouter
-  .route('/')
-  .get(getAllTours)
-  .post(createTour);
-
-tourRouter
-  .route('/:id')
-  .get(getSingleTour)
-  .patch(updateTour)
-  .delete(deleteTour);
-
-
-// User Routes
-userRouter
-  .route('/')
-  .get(getAllUsers)
-  .post(createUser);
-
-userRouter
-  .route('/:id')
-  .get(getUser)
-  .patch(updateUser)
-  .delete(deleteUser);
-
+// Mount Routers
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
-///////////////////////////////////////////////
-///// START SERVER
-///////////////////////////////////////////////
-
-// Port assign
-const port = 3000;
-app.listen(port, () => {
-  console.log(`The app is running on port: ${port}`);
-});
+module.exports = app;
 
