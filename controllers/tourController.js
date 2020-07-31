@@ -5,6 +5,18 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../data/app-data/tours-basic.json`)
 );
 
+// Middleware function
+exports.checkID = (req, res, next, val) => {
+  console.log(`The Tour ID id: ${val}`);
+  if (req.params.id * 1 > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID'
+    });
+  }
+  next();
+}
+
 exports.getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -18,14 +30,8 @@ exports.getAllTours = (req, res) => {
 // GET single tour by ID
 exports.getSingleTour = (req, res) => {
   const id = req.params.id * 1;
-
-  if (id > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
   const tour = tours.find(el => el.id === id);
+
   res.status(200).json({
     status: 'success',
     data: {
@@ -53,12 +59,7 @@ exports.createTour = (req, res) => {
 
 // PATCH request (update tour)
 exports.updateTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
+  
   res.status(200).json({
     status: 'success',
     data: {
@@ -69,12 +70,6 @@ exports.updateTour = (req, res) => {
 
 // DELETE tour
 exports.deleteTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
   res.status(204).json({
     status: 'success',
     data: null
