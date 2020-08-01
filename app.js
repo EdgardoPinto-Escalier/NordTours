@@ -10,8 +10,8 @@ const app = express();
 ///// GENERAL MIDDLEWARES
 ///////////////////////////////////
 app.use(morgan('dev'));
-
 app.use(express.json());
+app.use(express.static(`${__dirname}/public`)); // Serving static files
 
 // Custom Middleware
 app.use((req, res, next) => {
