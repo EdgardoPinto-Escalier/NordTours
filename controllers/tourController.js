@@ -2,28 +2,42 @@ const Tour = require('../models/tourModel');
 
 // Middleware function
 
-exports.getAllTours = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    /*results: tours.length,
-    data: {
-      tours,
-    },*/
-  });
+exports.getAllTours = async (req, res) => {
+  try {
+    const tours = await Tour.find(); // Get all tour from the tour collection in DB
+
+    res.status(200).json({
+      status: 'success',
+      results: tours.length,
+      data: {
+        tours,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: 'fail',
+      message: error,
+    });
+  }
 };
 
 // GET single tour by ID
-exports.getSingleTour = (req, res) => {
-  const id = req.params.id * 1;
+exports.getSingleTour = async (req, res) => {
+  try {
+    const tour = await Tour.findById(req.params.id);
 
-  /*const tour = tours.find((el) => el.id === id);
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  });*/
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: 'fail',
+      message: error,
+    });
+  }
 };
 
 // POST request (create tour)
