@@ -24,7 +24,7 @@ exports.getAllTours = async (req, res) => {
 // GET single tour by ID
 exports.getSingleTour = async (req, res) => {
   try {
-    const tour = await Tour.findById(req.params.id);
+    const tour = await Tour.findById(req.params.id); // Finds a single tour by its ID
 
     res.status(200).json({
       status: 'success',
