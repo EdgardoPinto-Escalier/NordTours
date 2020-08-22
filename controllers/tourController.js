@@ -4,7 +4,7 @@ const Tour = require('../models/tourModel');
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find(); // Get all tour from the tour collection in DB
+    const tours = await Tour.find(); // Get all tours from the tour collection in Database. Here we use the find().
 
     res.status(200).json({
       status: 'success',
