@@ -1,7 +1,5 @@
 const Tour = require('../models/tourModel');
 
-// Middleware function
-
 exports.getAllTours = async (req, res) => {
   try {
     const tours = await Tour.find(); // Get all tours from the tour collection in Database. Here we use the find().
@@ -62,10 +60,15 @@ exports.createTour = async (req, res) => {
 // PATCH request (update tour)
 exports.updateTour = async (req, res) => {
   try {
+    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
     res.status(200).json({
       status: 'success',
       data: {
-        tour: '<Updated Tour Successfully>',
+        tour,
       },
     });
   } catch (error) {
